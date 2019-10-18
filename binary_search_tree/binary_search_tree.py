@@ -9,6 +9,8 @@ class BinarySearchTree:
         self.value = value
         self.left = None
         self.right = None
+        self.stack = Stack()
+        self.queue = Queue()
 
     # Insert the given value into the tree
     def insert(self, value):
@@ -63,17 +65,40 @@ class BinarySearchTree:
     # Print all the values in order from low to high
     # Hint:  Use a recursive, depth first traversal
     def in_order_print(self, node):
-        pass
+        if self.left:
+            self.left.in_order_print(node)
+        print(self.value)
+        if self.right:
+            self.right.in_order_print(node)
+        
 
     # Print the value of every node, starting with the given node,
     # in an iterative breadth first traversal
     def bft_print(self, node):
-        pass
+        print(":::::::")
+        # print(self.stack.size)
+        self.queue.enqueue(self)
+        while(self.queue.size > 0):
+            node = self.queue.dequeue()
+            if node.left:
+                self.queue.enqueue(node.left)
+            if node.right:
+                self.queue.enqueue(node.right)
+            print(node.value)
 
     # Print the value of every node, starting with the given node,
     # in an iterative depth first traversal
     def dft_print(self, node):
-        pass
+        print(":::::::")
+        # print(self.stack.size)
+        self.stack.push(self)
+        while(self.stack.size > 0):
+            node = self.stack.pop()
+            if node.left:
+                self.stack.push(node.left)
+            if node.right:
+                self.stack.push(node.right)
+            print(node.value)
 
     # STRETCH Goals -------------------------
     # Note: Research may be required
@@ -85,3 +110,21 @@ class BinarySearchTree:
     # Print Post-order recursive DFT
     def post_order_dft(self, node):
         pass
+
+bst = BinarySearchTree(1)
+bst.insert(8)
+bst.insert(5)
+bst.insert(7)
+bst.insert(6)
+bst.insert(3)
+bst.insert(4)
+bst.insert(2)
+
+print("order expected\n", "1\n2\n3\n4\n5\n6\n7\n8\n")
+bst.in_order_print(bst)
+
+print("bft expected\n", "1\n8\n5\n3\n7\n2\n4\n6\n")
+bst.bft_print(bst)
+
+print("dft expected\n", "1\n8\n5\n7\n6\n3\n4\n2\n")
+bst.dft_print(bst)
